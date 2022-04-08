@@ -1,5 +1,10 @@
 #include "Order.hpp"
 
+bool isEQ(const Price& lhs, const Price& rhs, const double precision) { return std::fabs(lhs - rhs) < precision; }
+
+bool isLESS(const Price& lhs, const Price& rhs) { return lhs < rhs; }
+bool isGREAT(const Price& lhs, const Price& rhs) { return lhs > rhs; }
+
 Order::Order(const std::string& orderFromLine) {
     const std::string delimiter = ",";
     auto start = 0U;

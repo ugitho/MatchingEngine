@@ -17,7 +17,7 @@ using ReferencePrice = double;
 
 class OrderBook {
    public:
-    OrderBook(std::ifstream& inFile);
+    OrderBook();
     OrderBook(const OrderBook&) = delete;
     OrderBook(const OrderBook&&) = delete;
     OrderBook& operator=(const OrderBook&) = delete;
@@ -26,8 +26,14 @@ class OrderBook {
     const OrderSet& getBuyOrders() const { return buyOrders; }
     const OrderSet& getSellOrders() const { return sellOrders; }
 
+    void match(const std::shared_ptr<Order>& order /*, Quantity& quantityToMatch*/);
+    void accumulateVolume(std::uint64_t executedVolume) { volume += executedVolume; }
+    std::uint64_t getVolume() const { return volume; }
+    void setReferencePrice(const ReferencePrice& referencePrice) { this->referencePrice = referencePrice; }
+
    private:
     OrderSet buyOrders;
     OrderSet sellOrders;
     ReferencePrice referencePrice;
+    std::uint64_t volume;
 };

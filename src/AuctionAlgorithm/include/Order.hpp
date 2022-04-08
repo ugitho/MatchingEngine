@@ -1,4 +1,5 @@
 #pragma once
+
 #include <cmath>
 #include <cstdint>
 #include <iostream>
@@ -9,6 +10,10 @@ using TimeStamps = std::string;
 using Symbol = std::string;
 using Quantity = std::uint64_t;
 using Price = double;
+
+bool isEQ(const Price& lhs, const Price& rhs, const double precision = std::numeric_limits<double>::epsilon());
+bool isLESS(const Price& lhs, const Price& rhs);
+bool isGREAT(const Price& lhs, const Price& rhs);
 
 class Order {
    public:
@@ -25,6 +30,7 @@ class Order {
     const Quantity& getQuantity() const { return quantity; }
     const Price& getPrice() const { return price; }
 
+    void setNewQuantity(const Quantity& newQuantity) { quantity = newQuantity; }
     friend std::ostream& operator<<(std::ostream& os, const Order& order) {
         os << "timeStamps := " << order.timeStamps << ", symbol := " << order.symbol
            << ", orderType := " << (order.orderType == OrderType::BUY ? "BUY" : "SELL")
@@ -32,18 +38,18 @@ class Order {
         return os;
     }
     // TODO use relative tolerance
-    friend bool operator<(const Order& l, const Order& r) {
-        if (l.orderType == OrderType::BUY) {
-            if (std::fabs(l.price - r.price) < std::numeric_limits<double>::epsilon()) {
-                return l.timeStamps > r.timeStamps;  // FIFO
+    friend bool operator<(const Order& lhs, const Order& rhs) {
+        if (lhs.orderType == OrderType::BUY) {
+            if (isEQ(lhs.price, rhs.price)) {
+                return lhs.timeStamps > rhs.timeStamps;  // FIFO
             } else {
-                return l.price > r.price;  // greater BID
+                return lhs.price > rhs.price;  // greater BID
             }
         } else {
-            if (std::fabs(l.price - r.price) < std::numeric_limits<double>::epsilon()) {
-                return l.timeStamps > r.timeStamps;  // FIFO
+            if (isEQ(lhs.price, rhs.price)) {
+                return lhs.timeStamps > rhs.timeStamps;  // FIFO
             } else {
-                return l.price < r.price;  // lower ASK
+                return lhs.price < rhs.price;  // lower ASK
             }
         }
     }

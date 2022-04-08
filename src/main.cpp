@@ -5,8 +5,7 @@
 int main() {
     std::string fileName("auctionAAPL.txt");
     MatchingEngine::initEngine(fileName);
-    MatchingEngine::getInstance().process();
+    MatchingEngine::getInstance().run();
 
-    std::cout << "hello world" << std::endl; 
-    
+    std::cout << "hello world" << std::endl;
 }
