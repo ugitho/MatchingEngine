@@ -8,7 +8,7 @@ OrderBook::OrderBook(std::ifstream& inFile) {
     std::cout << "referencePrice := " << referencePrice << std::endl;
     while (std::getline(inFile, line)) {
         auto anOrder = std::make_shared<Order>(line);
-        std::cout << *anOrder << std::endl;
+        // std::cout << *anOrder << std::endl;
         if (anOrder->getOrderType() == OrderType::BUY) {
             buyOrders.insert(anOrder);
         } else {

@@ -32,16 +32,16 @@ class Order {
         return os;
     }
     // TODO use relative tolerance
-    friend bool operator>(const Order& l, const Order& r) {
+    friend bool operator<(const Order& l, const Order& r) {
         if (l.orderType == OrderType::BUY) {
             if (std::fabs(l.price - r.price) < std::numeric_limits<double>::epsilon()) {
-                return l.timeStamps < r.timeStamps;  // FIFO
+                return l.timeStamps > r.timeStamps;  // FIFO
             } else {
                 return l.price > r.price;  // greater BID
             }
         } else {
             if (std::fabs(l.price - r.price) < std::numeric_limits<double>::epsilon()) {
-                return l.timeStamps < r.timeStamps;  // FIFO
+                return l.timeStamps > r.timeStamps;  // FIFO
             } else {
                 return l.price < r.price;  // lower ASK
             }
