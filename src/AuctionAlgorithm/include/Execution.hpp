@@ -5,9 +5,10 @@
 #include "Order.hpp"
 
 class Execution {
-    public:
+   public:
     Execution();
-    private:
+
+   private:
     TimeStamps sellOrderTimeStamps;
     TimeStamps buyOrderTimeStamps;
     Quantity quantity;

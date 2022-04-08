@@ -24,4 +24,4 @@ set(CMAKE_FOLDER "third-party")
 # build our app with C++17
 set(CMAKE_CXX_STANDARD 17)
 add_subdirectory(src)
-#add_subdirectory(test/gtest)
+add_subdirectory(test/gtest)

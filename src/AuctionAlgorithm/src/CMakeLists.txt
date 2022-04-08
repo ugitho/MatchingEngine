@@ -13,7 +13,8 @@ set(PROJECT_SRC
      Order.cpp
      OrderBook.cpp
      MatchingEngine.cpp
-     Execution.cpp)
+     Execution.cpp
+     MatchingEngineImpl.cpp)
 
 add_library(${PROJECT_NAME}
     ${PROJECT_SRC})

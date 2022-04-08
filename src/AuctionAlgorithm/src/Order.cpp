@@ -9,7 +9,6 @@ Order::Order(const std::string& orderFromLine) {
     const std::string delimiter = ",";
     auto start = 0U;
     auto end = orderFromLine.find(delimiter);
-    //    std::cout << "orderFromLine := " << orderFromLine << std::endl;
     timeStamps = orderFromLine.substr(start, end - start);
     start = end + delimiter.length();
     end = orderFromLine.find(delimiter, start);

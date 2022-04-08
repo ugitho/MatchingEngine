@@ -6,7 +6,19 @@ mkdir build && cd build
 cmake ..
 make
 
-#3 Format code
+#3 Unitest
+./AuctionAlgorithmTest
 
-find ./src/ -iname *.h -o -iname *.cpp | xargs clang-format -i
-find ./test/ -iname *.h -o -iname *.cpp | xargs clang-format -i
+#4 main
+./main ../assets/auctionAAPL.txt
+
+##
+OrderBook contains 2 set of order.
+1. buyOrders
+2. sellOrders
+
+##
+Matching Engine reads the auction file line by line then process the order.
+If any order is matched, the crosse price will be used to create an execution
+If the order is not full fill, it will be add to the set to be prcocess later.
+

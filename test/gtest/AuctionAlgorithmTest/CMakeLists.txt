@@ -8,11 +8,11 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../third-party/gtest/include)
 
 set(PROJECT_SRC
-    OrderTest.cpp)
+    MatchingEngineTest.cpp)
 
 add_executable(${PROJECT_NAME}
     ${PROJECT_SRC})
 
 target_link_libraries(${PROJECT_NAME}
-    PUBLIC  gtest gtest_main
-    PRIVATE AuctionAlgorithm)
+    -L${CMAKE_CURRENT_SOURCE_DIR}/../../../third-party/gtest/lib gtest gtest_main
+    AuctionAlgorithm)
