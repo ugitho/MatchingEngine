@@ -1,11 +1,11 @@
 
 #include "OrderBook.hpp"
 
-OrderBook::OrderBook() : volume(0) {}
+OrderBook::OrderBook() : volume(0), remaining(0) {}
 
 OrderBook::~OrderBook() {}
 
-void OrderBook::match(const std::shared_ptr<Order>& order /*, Quantity& quantityToMatch*/) {
+void OrderBook::match(const std::shared_ptr<Order>& order) {
     if (order->getOrderType() == OrderType::BUY) {
         const auto& buyPrice = order->getPrice();
         for (auto sellOrder = sellOrders.begin(); sellOrder != sellOrders.end();) {
@@ -15,8 +15,7 @@ void OrderBook::match(const std::shared_ptr<Order>& order /*, Quantity& quantity
             const auto& sellQuantity = (*sellOrder)->getQuantity();
 
             std::cout << "buyQuantity := " << buyQuantity << std::endl;
-            // if(buyQuantity <= 0 || sellQuantity <= 0 || isGREAT(bestSellPrice, order->getPrice())){
-            if (buyQuantity <= 0 || isGREAT(bestSellPrice, buyPrice)) {
+            if (buyQuantity <= 0 || sellQuantity <= 0 || isGREAT(bestSellPrice, buyPrice)) {
                 break;
             }
             auto matchedQuantiy = std::min(buyQuantity, sellQuantity);
@@ -25,13 +24,14 @@ void OrderBook::match(const std::shared_ptr<Order>& order /*, Quantity& quantity
             order->setNewQuantity(buyQuantity - matchedQuantiy);
             (*sellOrder)->setNewQuantity(sellQuantity - matchedQuantiy);
             if ((*sellOrder)->getQuantity() == 0) {
-                sellOrders.erase(sellOrder);
+                sellOrders.erase(sellOrder++);
             } else {
                 sellOrder++;
             }
         }
         if (order->getQuantity() > 0) {
             std::cout << "add buy order" << std::endl;
+            remaining += order->getQuantity() ;
             buyOrders.insert(order);
         }
         std::cout << "finish buy order" << std::endl;
@@ -46,7 +46,7 @@ void OrderBook::match(const std::shared_ptr<Order>& order /*, Quantity& quantity
             const auto& buyQuantity = (*buyOrder)->getQuantity();
 
             std::cout << "sellQuantity := " << sellQuantity << std::endl;
-            if (sellQuantity <= 0 || isGREAT(sellPrice, bestBuyPrice)) {  // can't match any order
+            if (sellQuantity <= 0 || buyQuantity <= 0 || isGREAT(sellPrice, bestBuyPrice)) {  // can't match any order
                 break;
             }
 
@@ -56,13 +56,14 @@ void OrderBook::match(const std::shared_ptr<Order>& order /*, Quantity& quantity
             order->setNewQuantity(sellQuantity - matchedQuantiy);
             (*buyOrder)->setNewQuantity(buyQuantity - matchedQuantiy);
             if ((*buyOrder)->getQuantity() == 0) {
-                buyOrders.erase(buyOrder);
+                buyOrders.erase(buyOrder++);
             } else {
                 buyOrder++;
             }
         }
         if (order->getQuantity() > 0) {
             std::cout << "add sell order" << std::endl;
+            remaining -= order->getQuantity() ;
             sellOrders.insert(order);
         }
         std::cout << "finish sell order" << std::endl;

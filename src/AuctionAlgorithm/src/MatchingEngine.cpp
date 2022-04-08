@@ -10,14 +10,7 @@ std::string MatchingEngine::fileName = "";
 
 MatchingEngine::MatchingEngine() { orderBook = std::make_shared<OrderBook>(); }
 
-void MatchingEngine::process(std::shared_ptr<Order>& order) {
-    orderBook->match(order);
-    // std::cout << "volume := " << orderBook->getVolume() << std::endl;
-    /*    const auto& sellOrders = orderBook->getSellOrders();
-        for (auto& order : sellOrders) {
-            std::cout << "order := " << *order << std::endl;
-        }*/
-}
+void MatchingEngine::process(std::shared_ptr<Order>& order) { orderBook->match(order); }
 
 void MatchingEngine::run() {
     std::ifstream inFile;
@@ -32,6 +25,8 @@ void MatchingEngine::run() {
             auto anOrder = std::make_shared<Order>(line);
             std::cout << *anOrder << std::endl;
             process(anOrder);
+            std::cout << "RT volume := " << orderBook->getVolume() << std::endl;
+            std::cout << "RT emaining := " << orderBook->getRemaining() << std::endl;
         }
     } else {
         std::cout << "nok" << std::endl;
