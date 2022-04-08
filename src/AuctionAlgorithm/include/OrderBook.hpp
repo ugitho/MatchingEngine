@@ -7,6 +7,7 @@
 
 #include "Order.hpp"
 using OrderSet = std::set<std::shared_ptr<Order>>;
+using ReferencePrice = double;
 class OrderBook {
    public:
     OrderBook(std::ifstream& inFile);
@@ -21,4 +22,5 @@ class OrderBook {
    private:
     OrderSet buyOrders;
     OrderSet sellOrders;
+    ReferencePrice referencePrice;
 };
